@@ -1,0 +1,277 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}plog_6
+       {txt}log:  {res}G:\STATA\submission\archive\submission_20210120_220955\dos\analysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}20 Jan 2021, 22:29:51
+{txt}
+{com}. * loading project dta files
+. project, doinfo
+{txt}project analysis_master > Project Name: {res}analysis_master
+{txt}project analysis_master > Project Dir.: {res}G:/STATA/submission/archive/submission_20210120_220955
+{txt}project analysis_master > Build start : {res}20jan2021, 22:29:25{txt}
+project analysis_master > Do-file Name: {res}analysis.do
+{txt}project analysis_master > Enclosing do-files:
+project analysis_master >     {res}analysis_master.do
+{txt}
+{com}. local master "`r(pdir)'"
+{txt}
+{com}. local doname "`r(dofile)'"
+{txt}
+{com}. 
+. * dta load and merge
+. use "`master'/dtas/Advance Data Analysis - Socio Economic New.dta", clear
+{txt}
+{com}. merge 1:1 Ward Name using "`master'/dtas/Advance Data Analysis - Infrastructure.dta"
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}               0
+{txt}{col 5}matched{col 30}{res}             198{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. 
+. * data cleaning
+. destring, replace
+{txt}Ward has all characters numeric; {res}replaced {txt}as {res}int
+{txt}Name contains nonnumeric bytes; no {res}replace
+{txt}HHwithBanking already numeric; no {res}replace
+{txt}HHwithAssets already numeric; no {res}replace
+{txt}Percent_SC_ST_Pop already numeric; no {res}replace
+{txt}Percent_ILL_Pop already numeric; no {res}replace
+{txt}Workforce_Participation already numeric; no {res}replace
+{txt}TapWater_Treated already numeric; no {res}replace
+{txt}ConcreteWalls already numeric; no {res}replace
+{txt}Electriclighting already numeric; no {res}replace
+{txt}ClosedDrainage already numeric; no {res}replace
+{txt}_merge already numeric; no {res}replace
+{txt}
+{com}. rename Ward WARD_NO
+{res}{txt}
+{com}. duplicates report WARD_NO
+
+{p 0 4}{txt}Duplicates in terms of {res} WARD_NO{p_end}
+
+{txt}{hline 10}{c TT}{hline 27}
+   copies {c |} observations       surplus
+{hline 10}{c +}{hline 27}
+        1 {c |}          {res}198             0
+{txt}{hline 10}{c BT}{hline 27}
+
+{com}. duplicates drop
+
+{p 0 4}{txt}Duplicates in terms of {txt} all variables{p_end}
+
+(0 observations are duplicates)
+
+{com}. 
+. * exploratory data analysis
+. browse
+{txt}
+{com}. describe
+
+{txt}Contains data from {res}G:/STATA/submission/archive/submission_20210120_220955/dtas/Advance Data Analysis - Socio Economic New.dta
+{txt}  obs:{res}           198                          
+{txt} vars:{res}            12                          20 Jan 2021 19:50
+{txt} size:{res}        20,988                          
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:WARD_NO        }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Ward{p_end}
+{p 0 48}{bind:Name           }{txt}{bind: str31   }{bind:{txt}%31s      }{space 1}{bind:         }{bind:  }{res}{res}Name{p_end}
+{p 0 48}{bind:HHwithBanking  }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}HH with Banking{p_end}
+{p 0 48}{bind:HHwithAssets   }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}HH with Assets{p_end}
+{p 0 48}{bind:Percent_SC_ST~p}{txt}{bind: double  }{bind:{txt}%14.2f    }{space 1}{bind:         }{bind:  }{res}{res}Percent_SC_ST _Pop{p_end}
+{p 0 48}{bind:Percent_ILL_Pop}{txt}{bind: double  }{bind:{txt}%14.2f    }{space 1}{bind:         }{bind:  }{res}{res}Percent_ILL_Pop{p_end}
+{p 0 48}{bind:Workforce_Par~n}{txt}{bind: double  }{bind:{txt}%14.2f    }{space 1}{bind:         }{bind:  }{res}{res}Workforce_Participation{p_end}
+{p 0 48}{bind:TapWater_Trea~d}{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Tap Water_Treated{p_end}
+{p 0 48}{bind:ConcreteWalls  }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Concrete Walls{p_end}
+{p 0 48}{bind:Electriclight~g}{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Electric lighting{p_end}
+{p 0 48}{bind:ClosedDrainage }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Closed Drainage{p_end}
+{p 0 48}{bind:_merge         }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:_merge   }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}WARD_NO {c |}{res}        198        99.5    57.30183          1        198
+{txt}{space 8}Name {c |}{res}          0
+{txt}HHwithBank~g {c |}{res}        198     69.3899    16.47939       12.6       94.9
+{txt}HHwithAssets {c |}{res}        198    26.59495    13.99939        2.3       59.8
+{txt}Percent_SC~p {c |}{res}        198    13.51399    8.207851   .6702306   53.32849
+{txt}{hline 13}{c +}{hline 57}
+Percent_IL~p {c |}{res}        198    20.51046      4.5179   12.36766   35.38126
+{txt}Workforce_~n {c |}{res}        198    43.21698    4.167793   33.92257   59.77272
+{txt}TapWater_T~d {c |}{res}        198    76.34343    23.21769       14.7       98.8
+{txt}ConcreteWa~s {c |}{res}        198    20.58131    9.511217        1.6       53.7
+{txt}Electricli~g {c |}{res}        198    98.39596     1.45511       84.5       99.8
+{txt}{hline 13}{c +}{hline 57}
+ClosedDrai~e {c |}{res}        198    86.38586    19.16676       25.3        100
+{txt}{space 6}_merge {c |}{res}        198           3           0          3          3
+{txt}
+{com}. correlate HHwithBanking HHwithAssets Percent_SC_ST_Pop Percent_ILL_Pop Workforce_Participation
+{txt}(obs=198)
+
+             {c |} HHwith~g HHwith~s Pe~T_Pop Pe~L_Pop Workfo~n
+{hline 13}{c +}{hline 45}
+HHwithBank~g {c |}{res}   1.0000
+{txt}HHwithAssets {c |}{res}   0.8595   1.0000
+{txt}Percent_SC~p {c |}{res}  -0.3973  -0.2773   1.0000
+{txt}Percent_IL~p {c |}{res}  -0.8683  -0.7168   0.3377   1.0000
+{txt}Workforce_~n {c |}{res}   0.0417  -0.0269  -0.0515  -0.0171   1.0000
+
+{txt}
+{com}. correlate TapWater_Treated ConcreteWalls Electriclighting ClosedDrainage
+{txt}(obs=198)
+
+             {c |} TapWat~d Concre~s Electr~g Closed~e
+{hline 13}{c +}{hline 36}
+TapWater_T~d {c |}{res}   1.0000
+{txt}ConcreteWa~s {c |}{res}  -0.0413   1.0000
+{txt}Electricli~g {c |}{res}   0.3330   0.0301   1.0000
+{txt}ClosedDrai~e {c |}{res}   0.7992   0.0199   0.3368   1.0000
+
+{txt}
+{com}. 
+. * SED index generation
+. egen std_assets = std(HHwithAssets)
+{txt}
+{com}. egen std_percent_sc_sc = std(Percent_SC_ST_Pop)
+{txt}
+{com}. egen std_ill = std(Percent_ILL_Pop)
+{txt}
+{com}. egen std_wp = std(Workforce_Participation)
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}WARD_NO {c |}{res}        198        99.5    57.30183          1        198
+{txt}{space 8}Name {c |}{res}          0
+{txt}HHwithBank~g {c |}{res}        198     69.3899    16.47939       12.6       94.9
+{txt}HHwithAssets {c |}{res}        198    26.59495    13.99939        2.3       59.8
+{txt}Percent_SC~p {c |}{res}        198    13.51399    8.207851   .6702306   53.32849
+{txt}{hline 13}{c +}{hline 57}
+Percent_IL~p {c |}{res}        198    20.51046      4.5179   12.36766   35.38126
+{txt}Workforce_~n {c |}{res}        198    43.21698    4.167793   33.92257   59.77272
+{txt}TapWater_T~d {c |}{res}        198    76.34343    23.21769       14.7       98.8
+{txt}ConcreteWa~s {c |}{res}        198    20.58131    9.511217        1.6       53.7
+{txt}Electricli~g {c |}{res}        198    98.39596     1.45511       84.5       99.8
+{txt}{hline 13}{c +}{hline 57}
+ClosedDrai~e {c |}{res}        198    86.38586    19.16676       25.3        100
+{txt}{space 6}_merge {c |}{res}        198           3           0          3          3
+{txt}{space 2}std_assets {c |}{res}        198    1.41e-09           1  -1.735429   2.371892
+{txt}std_percen~c {c |}{res}        198   -2.77e-09           1  -1.564815   4.850782
+{txt}{space 5}std_ill {c |}{res}        198   -7.17e-10           1  -1.802343   3.291528
+{txt}{hline 13}{c +}{hline 57}
+{space 6}std_wp {c |}{res}        198   -1.76e-10           1  -2.230056   3.972304
+{txt}
+{com}. generate sed = std_percent_sc_sc + std_ill - std_wp - std_assets
+{txt}
+{com}. summarize sed
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 9}sed {c |}{res}        198   -1.16e-08    2.597513  -5.899752   8.519378
+{txt}
+{com}. format sed %14.2f
+{txt}
+{com}. 
+. * InfraD index generation
+. egen std_tap = std(TapWater_Treated)
+{txt}
+{com}. egen std_walls = std(ConcreteWalls)
+{txt}
+{com}. egen std_light = std(Electriclighting)
+{txt}
+{com}. egen std_drain = std(ClosedDrainage)
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}WARD_NO {c |}{res}        198        99.5    57.30183          1        198
+{txt}{space 8}Name {c |}{res}          0
+{txt}HHwithBank~g {c |}{res}        198     69.3899    16.47939       12.6       94.9
+{txt}HHwithAssets {c |}{res}        198    26.59495    13.99939        2.3       59.8
+{txt}Percent_SC~p {c |}{res}        198    13.51399    8.207851   .6702306   53.32849
+{txt}{hline 13}{c +}{hline 57}
+Percent_IL~p {c |}{res}        198    20.51046      4.5179   12.36766   35.38126
+{txt}Workforce_~n {c |}{res}        198    43.21698    4.167793   33.92257   59.77272
+{txt}TapWater_T~d {c |}{res}        198    76.34343    23.21769       14.7       98.8
+{txt}ConcreteWa~s {c |}{res}        198    20.58131    9.511217        1.6       53.7
+{txt}Electricli~g {c |}{res}        198    98.39596     1.45511       84.5       99.8
+{txt}{hline 13}{c +}{hline 57}
+ClosedDrai~e {c |}{res}        198    86.38586    19.16676       25.3        100
+{txt}{space 6}_merge {c |}{res}        198           3           0          3          3
+{txt}{space 2}std_assets {c |}{res}        198    1.41e-09           1  -1.735429   2.371892
+{txt}std_percen~c {c |}{res}        198   -2.77e-09           1  -1.564815   4.850782
+{txt}{space 5}std_ill {c |}{res}        198   -7.17e-10           1  -1.802343   3.291528
+{txt}{hline 13}{c +}{hline 57}
+{space 6}std_wp {c |}{res}        198   -1.76e-10           1  -2.230056   3.972304
+{txt}{space 9}sed {c |}{res}        198   -1.16e-08    2.597513  -5.899752   8.519378
+{txt}{space 5}std_tap {c |}{res}        198    6.77e-10           1   -2.65502   .9672182
+{txt}{space 3}std_walls {c |}{res}        198    9.92e-10           1  -1.995677   3.482066
+{txt}{space 3}std_light {c |}{res}        198    1.99e-10           1  -9.549768   .9649056
+{txt}{hline 13}{c +}{hline 57}
+{space 3}std_drain {c |}{res}        198    1.54e-09           1  -3.187073   .7102995
+{txt}
+{com}. generate infrad = - std_tap - std_walls - std_light - std_drain
+{txt}
+{com}. summarize infrad
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 6}infrad {c |}{res}        198   -5.72e-09    2.637271  -4.769387   10.73676
+{txt}
+{com}. format infrad %14.2f
+{txt}
+{com}. 
+. * load Bangalore gis db and merge with data
+. merge 1:1 WARD_NO using "`master'/dtas/bangdb.dta", nogenerate
+{res}
+{txt}{col 5}Result{col 38}# of obs.
+{col 5}{hline 41}
+{col 5}not matched{col 30}{res}               0
+{txt}{col 5}matched{col 30}{res}             198{txt}  
+{col 5}{hline 41}
+
+{com}. 
+. * SED Choropleth map plot for BBMP Wards
+. spmap sed using "`master'/dtas/bangcoord.dta", id(id)   ///
+> clmethod(custom) clnumber(5) clbreaks(-6 -3 0 3 6 9) fcolor(Reds) ///
+> title("Socio-Economic Index of BBMP Ward", size(*0.8))  ///
+> subtitle("The wards with the index value above 6 are the most socio-economically deprived wards", size(*0.4))   ///  
+> legstyle(1) legtitle("Index Value") legend(region(lcolor(black)) position(2))
+{res}{txt}
+{com}. 
+. * InfraD Choropleth map plot for BBMP Wards
+. spmap infrad using "`master'/dtas/bangcoord.dta", id(id)        ///
+> clmethod(custom) clnumber(7) clbreaks(-5 -2.5 0 2.5 5 7.5 10 12.5) fcolor(Blues) ///
+> title("Quality of Infrastructure Index of BBMP Ward", size(*0.8))       ///
+> subtitle("The wards with the index value above 5 are the wards with lowest quality of infrstructure", size(*0.4))       ///  
+> legstyle(1) legtitle("Index Value") legend(region(lcolor(black)) position(2))
+{res}{txt}
+{com}. 
+. * scatterplot between SED and InfraD
+. scatter sed infrad
+{res}{txt}
+{com}. 
+. *The End
+. 
+. 
+. 
+. 
+. 
+{txt}end of do-file
+      name:  {res}plog_6
+       {txt}log:  {res}G:\STATA\submission\archive\submission_20210120_220955\dos\analysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}20 Jan 2021, 22:30:07
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
