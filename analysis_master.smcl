@@ -1,0 +1,65 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}plog_1
+       {txt}log:  {res}G:\STATA\submission\archive\submission_20210120_220955\analysis_master.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}20 Jan 2021, 22:29:25
+{txt}
+{com}. * downloading and installing gis libraries
+. ssc install project
+{txt}checking {hilite:project} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. ssc install spmap
+{txt}checking {hilite:spmap} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. 
+. * Common settings
+. 
+. set more off
+{txt}
+{com}. set varabbrev off  // less confusing
+{txt}
+{com}. set linesize 132   // use 7pt font for printing
+{txt}
+{com}. 
+. * Run do-files
+. project, doinfo
+{txt}project analysis_master > Project Name: {res}analysis_master
+{txt}project analysis_master > Project Dir.: {res}G:/STATA/submission/archive/submission_20210120_220955
+{txt}project analysis_master > Build start : {res}20jan2021, 22:29:25{txt}
+project analysis_master > Do-file Name: {res}analysis_master.do
+{txt}
+{com}. local master "`r(pdir)'"
+{txt}
+{com}. local doname "`r(dofile)'"
+{txt}
+{com}.         
+. project, original("`master'/dtas/Advance Data Analysis - Socio Economic New.dta")
+{txt}project analysis_master > do-file uses original: {res}"dtas/Advance Data Analysis - Socio Economic New.dta" filesig(3267493337:19885){txt}
+
+{com}. project, original("`master'/dtas/Advance Data Analysis - Infrastructure.dta")
+{txt}project analysis_master > do-file uses original: {res}"dtas/Advance Data Analysis - Infrastructure.dta" filesig(1403222293:17661){txt}
+
+{com}. project, original("`master'/dtas/bangdb.dta")
+{txt}project analysis_master > do-file uses original: {res}"dtas/bangdb.dta" filesig(4242009448:33717){txt}
+
+{com}. project, original("`master'/dtas/bangcoord.dta")
+{txt}project analysis_master > do-file uses original: {res}"dtas/bangcoord.dta" filesig(3555485965:745263){txt}
+
+{com}. project , do(dos/analysis.do)
+{txt}project analysis_master > do-file uses original: {res}"dos/analysis.do" filesig(401613676:2307){txt}
+{smcl}
+{txt}{sf}{ul off}{smcl}
+{txt}{sf}{ul off}project analysis_master > do-file creates: {res}"dos/analysis.smcl" filesig(3368405566:13249){txt}
+
+{com}. 
+{txt}end of do-file
+      name:  {res}plog_1
+       {txt}log:  {res}G:\STATA\submission\archive\submission_20210120_220955\analysis_master.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}20 Jan 2021, 22:30:07
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
